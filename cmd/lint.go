@@ -22,14 +22,14 @@ var lintCommand = &cobra.Command{
 		lines := LinesInFile(args[0])
 
 		// init store of lines that break rules
-		offendingLines := map[int][]string{}
+		offendingLines := []string{}
 
 		// run rule checker functions
 		offendingLines = trailingWhitespace(lines, offendingLines)
 
 		// print lint failures to console
-		for index, line := range offendingLines {
-			fmt.Printf("line %v, issue = %v\n", index+1, line)
+		for _, line := range offendingLines {
+			fmt.Println(line)
 		}
 	},
 }
@@ -45,12 +45,12 @@ func LinesInFile(filename string) []string {
 	return result
 }
 
-func trailingWhitespace(lines []string, offendingLines map[int][]string) map[int][]string {
+func trailingWhitespace(lines []string, offendingLines []string) []string {
 	for index, line := range lines {
 		newline := strings.TrimRight(line, " ")
 
 		if line != newline {
-			offendingLines[index] = append(offendingLines[index], "Trailing whitespace")
+			offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = Trailing whitespace", index))
 		}
 	}
 	return offendingLines
