@@ -13,7 +13,9 @@ $ gsl lint example/test.sql
 **cmd**
 - [] error if filename not `.sql`
 - [] overwrite previous file
+
 **lint rules**
+
 - [x] Trailing Whitespace
 - [] Greater than one newline
 - [] capitalisation of SQL keywords
