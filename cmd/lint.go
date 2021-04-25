@@ -31,7 +31,7 @@ var lintCommand = &cobra.Command{
 			}
 		}
 		for index, line := range offendingLines {
-			fmt.Printf("line %v, issue = %v\n", index , line)
+			fmt.Printf("line %v, issue = %v\n", index+1 , line)
 		}
 	},
 }
