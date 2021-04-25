@@ -23,13 +23,7 @@ var lintCommand = &cobra.Command{
 
 		offendingLines := map[int][]string{}
 
-		for index, line := range lines  {
-			newline := strings.TrimRight(line, " ")
-
-			if line != newline {
-				offendingLines[index] = append(offendingLines[index], "Trailing whitespace")
-			}
-		}
+		offendingLines = trailingWhitespace(lines, offendingLines)
 		for index, line := range offendingLines {
 			fmt.Printf("line %v, issue = %v\n", index+1 , line)
 		}
@@ -45,4 +39,15 @@ func LinesInFile(filename string) []string  {
 		result = append(result, line)
 	}
 	return result
+}
+
+func trailingWhitespace(lines []string, offendingLines map[int][]string) map[int][]string {
+	for index, line := range lines  {
+		newline := strings.TrimRight(line, " ")
+
+		if line != newline {
+			offendingLines[index] = append(offendingLines[index], "Trailing whitespace")
+		}
+	}
+	return offendingLines
 }
