@@ -2,13 +2,16 @@ package fs
 
 import (
 	"bufio"
-	"strings"
 	"fmt"
 	"os"
-
+	"strings"
 )
 
 func LinesInFile(filename string) []string {
+	if strings.TrimSpace(filename) != ".sql" {
+		fmt.Println("❌ Please provide a file with the .sql extension")
+		os.Exit(1)
+	}
 	f, _ := os.Open(filename)
 	scanner := bufio.NewScanner(f)
 	result := []string{}

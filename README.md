@@ -11,7 +11,7 @@ $ gsl lint example/test.sql
 
 # TODOs
 **cmd**
-- [] error if filename not `.sql`
+- [x] error if filename not `.sql`
 - [] overwrite previous file
 **lint rules**
 - [x] Trailing Whitespace
