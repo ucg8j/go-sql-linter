@@ -1,10 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-	"bufio"
-
 	"github.com/spf13/cobra"
 
 	"go-sql-linter/fs"
@@ -20,25 +16,13 @@ var fixCommand = &cobra.Command{
 	Args:  cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		// read lines
-		lines := fs.LinesInFile(args[0])
+		lines := fs.ReadLinesInFile(args[0])
 		lint := false
 
 		// fix lines
 		lines = fs.TrailingWhitespace(lines, lint)
 
 		// write new file
-		fmt.Println("Writing new file...")
-		file, err := os.Create("./temp.sql")
-    if err != nil {
-        panic(err)
-    }
-    writer := bufio.NewWriter(file)
-    for _, line := range lines {
-        _, err := writer.WriteString(line + "\n")
-        if err != nil {
-            panic("Got error while writing to a file")
-        }
-    }
-    writer.Flush()
+		fs.WriteLinesInFile(args[0], lines)
 	},
 }

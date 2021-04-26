@@ -12,7 +12,7 @@ $ gsl lint example/test.sql
 # TODOs
 **cmd**
 - [x] error if filename not `.sql`
-- [] overwrite previous file
+- [x] overwrite previous file
 
 **lint rules**
 

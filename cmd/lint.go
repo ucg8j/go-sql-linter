@@ -18,7 +18,7 @@ var lintCommand = &cobra.Command{
 	Args:  cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		// read lines
-		lines := fs.LinesInFile(args[0])
+		lines := fs.ReadLinesInFile(args[0])
 		lint := true
 
 		// run rule checker functions

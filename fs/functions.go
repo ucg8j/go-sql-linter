@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"path/filepath"
 )
 
-func LinesInFile(filename string) []string {
-	if strings.TrimSpace(filename) != ".sql" {
+func ReadLinesInFile(filename string) []string {
+	if filepath.Ext(strings.TrimSpace(filename)) != ".sql" {
 		fmt.Println("❌ Please provide a file with the .sql extension")
 		os.Exit(1)
 	}
@@ -20,6 +21,23 @@ func LinesInFile(filename string) []string {
 		result = append(result, line)
 	}
 	return result
+}
+
+func WriteLinesInFile(filename string, lines []string)  {
+			// write new file
+			fmt.Println("Writing new file...")
+			file, err := os.Create(filename)
+			if err != nil {
+				panic(err)
+			}
+			writer := bufio.NewWriter(file)
+			for _, line := range lines {
+				_, err := writer.WriteString(line + "\n")
+				if err != nil {
+					panic("Got error while writing to a file")
+				}
+			}
+			writer.Flush()
 }
 
 func TrailingWhitespace(lines []string, lint bool) []string {
