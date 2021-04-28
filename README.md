@@ -1,6 +1,8 @@
 # gsl
 > go-sql-linter | good-sql-looks
 
+![](./example/gsl-in-action.gif)
+
 # Dev
 ```bash
 # build
@@ -17,6 +19,6 @@ $ gsl lint example/test.sql
 **lint rules**
 
 - [x] Trailing Whitespace
-- [] Greater than one newline
+- [x] Greater than one newline
 - [] capitalisation of SQL keywords
 ...
