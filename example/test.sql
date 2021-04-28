@@ -7,6 +7,8 @@ WITH bad_cte AS (
   from `project.dataset.table` a
 ),
 
+
+
 good_cte AS (
   SELECT
   a,
@@ -15,6 +17,9 @@ good_cte AS (
 
   FROM `project.dataset.table` b
 )
+
+
+
 
 SELECT
 a,
