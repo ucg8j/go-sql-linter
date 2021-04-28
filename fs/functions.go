@@ -63,3 +63,38 @@ func TrailingWhitespace(lines []string, lint bool) []string {
 	return newLines
 
 }
+
+func MultipleNewLines(lines []string, lint bool) []string {
+	// init store of lines that break rules
+	offendingLines := []string{}
+	newLines := []string{}
+
+	var previousLine string
+
+	for index, line := range lines {
+		// not possible to have consecutive newlines
+		if index == 0 {
+			previousLine = line
+			newLines = append(newLines, line)
+			continue
+		}
+
+		// newlines aren't represented by '\n' because the scanner in ReadLinesInFile uses it as the separator
+		if previousLine == line && line == "" && lint {
+			offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = Multiple new lines", index))
+		} else if previousLine == line && line == "" && (len(lines)-1) != index {
+			// no need to append if empty line
+			continue
+		} else {
+			newLines = append(newLines, line)
+		}
+
+		previousLine = line
+	}
+
+	if lint {
+		return offendingLines
+	}
+	return newLines
+
+}

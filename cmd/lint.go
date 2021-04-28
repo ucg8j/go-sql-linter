@@ -23,6 +23,9 @@ var lintCommand = &cobra.Command{
 
 		// run rule checker functions
 		offendingLines := fs.TrailingWhitespace(lines, lint)
+		// TODO make elegant
+		offendingLines2 := fs.MultipleNewLines(lines, lint)
+		offendingLines = append(offendingLines, offendingLines2...)
 
 		// print lint failures to console
 		for _, line := range offendingLines {

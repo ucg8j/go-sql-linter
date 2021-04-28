@@ -21,6 +21,7 @@ var fixCommand = &cobra.Command{
 
 		// fix lines
 		lines = fs.TrailingWhitespace(lines, lint)
+		lines = fs.MultipleNewLines(lines, lint)
 
 		// write new file
 		fs.WriteLinesInFile(args[0], lines)
