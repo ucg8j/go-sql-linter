@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 )
 
 func ReadLinesInFile(filename string) []string {
@@ -23,21 +23,21 @@ func ReadLinesInFile(filename string) []string {
 	return result
 }
 
-func WriteLinesInFile(filename string, lines []string)  {
-			// write new file
-			fmt.Println("Writing new file...")
-			file, err := os.Create(filename)
-			if err != nil {
-				panic(err)
-			}
-			writer := bufio.NewWriter(file)
-			for _, line := range lines {
-				_, err := writer.WriteString(line + "\n")
-				if err != nil {
-					panic("Got error while writing to a file")
-				}
-			}
-			writer.Flush()
+func WriteLinesInFile(filename string, lines []string) {
+	// write new file
+	fmt.Println("Writing new file...")
+	file, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	writer := bufio.NewWriter(file)
+	for _, line := range lines {
+		_, err := writer.WriteString(line + "\n")
+		if err != nil {
+			panic("Got error while writing to a file")
+		}
+	}
+	writer.Flush()
 }
 
 func TrailingWhitespace(lines []string, lint bool) []string {
@@ -48,6 +48,11 @@ func TrailingWhitespace(lines []string, lint bool) []string {
 	for index, line := range lines {
 		newline := strings.TrimRight(line, " ")
 
+		// 3 cases:
+		//   1. if linting and lines don't equal, it's a whitespace issue
+		//   2. if fixing and lines don't equal, append the fixed newLine
+		//   3. otherwise append lines as they are - required for fixing
+		//      a file. Doesn't matter for linting.
 		if line != newline && lint {
 			offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = Trailing whitespace", index))
 		} else if line != newline && !lint {
