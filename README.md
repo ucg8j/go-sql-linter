@@ -15,10 +15,12 @@ $ gsl lint example/test.sql
 **cmd**
 - [x] error if filename not `.sql`
 - [x] overwrite previous file
+- [] take multiple files could be `gsl file1 file2` or `gsl .` with an `-r` flag for recursive
 
 **lint rules**
 
 - [x] Trailing Whitespace
 - [x] Greater than one newline
 - [] capitalisation of SQL keywords
+- [] detecting nested queries
 ...
