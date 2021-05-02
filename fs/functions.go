@@ -48,17 +48,10 @@ func TrailingWhitespace(lines []string, lint bool) []string {
 	for index, line := range lines {
 		newline := strings.TrimRight(line, " ")
 
-		// 3 cases:
-		//   1. if linting and lines don't equal, it's a whitespace issue
-		//   2. if fixing and lines don't equal, append the fixed newLine
-		//   3. otherwise append lines as they are - required for fixing
-		//      a file. Doesn't matter for linting.
 		if line != newline && lint {
 			offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = Trailing whitespace", index))
-		} else if line != newline && !lint {
-			newLines = append(newLines, newline)
 		} else {
-			newLines = append(newLines, line)
+			newLines = append(newLines, newline)
 		}
 	}
 
