@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 
 	"go-sql-linter/fs"
@@ -26,5 +27,7 @@ var fixCommand = &cobra.Command{
 
 		// write new file
 		fs.WriteLinesInFile(args[0], lines)
+
+		fmt.Println("\n ✅ Your SQL now looks much better!")
 	},
 }
