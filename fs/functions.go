@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+// https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#reserved_keywords
+var reservedKeywords = []string{
+"ALL", "AND", "ANY", "ARRAY", "AS", "ASC", "ASSERT_ROWS_MODIFIED", "AT", "BETWEEN", "BY", "CASE", "CAST", "COLLATE", "CONTAINS", "CREATE", "CROSS", "CUBE", "CURRENT", "DEFAULT", "DEFINE", "DESC", "DISTINCT", "ELSE", "END", "ENUM", "ESCAPE", "EXCEPT", "EXCLUDE", "EXISTS", "EXTRACT", "FALSE", "FETCH", "FOLLOWING", "FOR", "FROM", "FULL", "GROUP", "GROUPING", "GROUPS", "HASH", "HAVING", "IF", "IGNORE", "IN", "INNER", "INTERSECT", "INTERVAL", "INTO", "IS", "JOIN", "LATERAL", "LEFT", "LIKE", "LIMIT", "LOOKUP", "MERGE", "NATURAL", "NEW", "NO", "NOT", "NULL", "NULLS", "OF", "ON", "OR", "ORDER", "OUTER", "OVER", "PARTITION", "PRECEDING", "PROTO", "RANGE", "RECURSIVE", "RESPECT", "RIGHT", "ROLLUP", "ROWS", "SELECT", "SET", "SOME", "STRUCT", "TABLESAMPLE", "THEN", "TO", "TREAT", "TRUE", "UNBOUNDED", "UNION", "UNNEST", "USING", "WHEN", "WHERE", "WINDOW", "WITH", "WITHIN",}
+
 func ReadLinesInFile(filename string) []string {
 	if filepath.Ext(strings.TrimSpace(filename)) != ".sql" {
 		fmt.Println("❌ Please provide a file with the .sql extension")
@@ -95,4 +99,61 @@ func MultipleNewLines(lines []string, lint bool) []string {
 	}
 	return newLines
 
+}
+
+func CapitaliseKeywords(lines []string, lint bool) []string  {
+	// init store of lines that break rules
+	offendingLines := []string{}
+	newLines := []string{}
+
+	for index, line := range lines {
+		// Rudimentary approach without lexical parsing, trim the start of the line and skip if it is a comment or jinja syntax
+		lineTrim := strings.TrimLeft(line, " ")
+		if strings.HasPrefix(lineTrim, "--") || strings.HasPrefix(lineTrim, "#")|| strings.HasPrefix(lineTrim, "{{")|| strings.HasPrefix(lineTrim, "\"") || strings.HasPrefix(lineTrim, "/*")  {
+			newLines = append(newLines, line)
+			continue
+		}
+
+		newLine := []string{}
+		comment := false
+		// TODO make the following two loops O(n), currently O(n^2)
+		for _, word := range strings.Split(line, " ") {
+
+			// check for comment
+			if word == "--" || word == "#" {
+				comment = true
+				newLine = append(newLine, word)
+				continue
+			} else if comment {
+				newLine = append(newLine, word)
+				continue
+			}
+
+			// check for keywords
+			isKeyword := false
+			for _, keyword := range reservedKeywords {
+				if word == keyword && !comment {
+					isKeyword = true
+					newLine = append(newLine, word)
+					break
+				} else if strings.ToUpper(word) == keyword && !comment {
+					isKeyword = true
+					offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, word))
+					newLine = append(newLine, strings.ToUpper(word))
+					break
+				}
+			}
+
+			// else append line
+			if !isKeyword && !comment {
+				newLine = append(newLine, word)
+			}
+		}
+		newLines = append(newLines, strings.Join(newLine, " "))
+	}
+
+	if lint {
+		return offendingLines
+	}
+	return newLines
 }
