@@ -33,5 +33,6 @@ var lintCommand = &cobra.Command{
 		for _, line := range offendingLines {
 			fmt.Println(line)
 		}
+		fmt.Println("\n🔨 To fix run:\n$ gsl fix [filename]")
 	},
 }
