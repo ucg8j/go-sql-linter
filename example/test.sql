@@ -1,4 +1,13 @@
+{{
+	config(
+		tags=[
+			"pii=false"
+		],
+	)
+}}
+
 WITH bad_cte AS (
+  -- ❌ A poorly formatted piece of SQL
   SeLeCT 
     a,   
     b,  
@@ -10,6 +19,7 @@ WITH bad_cte AS (
 
 
 good_cte AS (
+  -- ✅ Better
   SELECT
   a,
   c,
@@ -25,6 +35,6 @@ SELECT
 a,
 b,
 c,
-d,
-FROM bad_cte
+d, -- ❌ trailing comma ❌ newline after select block
+FROM bad_cte -- ❌ newline after from block
 LEFT JOIN good_cte USING (a)
