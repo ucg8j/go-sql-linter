@@ -23,4 +23,7 @@ $ gsl lint example/test.sql
 - [x] Greater than one newline
 - [] capitalisation of SQL keywords
 - [] detecting nested queries
+- [] 2 spaces for indentation
+- [] blank line between groups of logic e.g after a select statement, after a from, after Joins etc
+- 
 ...
