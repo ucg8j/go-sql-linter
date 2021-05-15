@@ -30,7 +30,6 @@ good_cte AS (
 
 
 
-
 SELECT
 a,
 b,
