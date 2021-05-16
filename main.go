@@ -1,9 +1,9 @@
 package main
 
 import (
-  "go-sql-linter/cmd"
+	"go-sql-linter/cmd"
 )
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }
