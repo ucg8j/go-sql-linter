@@ -148,7 +148,7 @@ func TrailingWhitespace(lines []string, lint bool) []string {
 		newline := strings.TrimRight(line, " ")
 
 		if line != newline && lint {
-			offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = Trailing whitespace", index))
+			offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = Trailing whitespace", index+1))
 		} else {
 			newLines = append(newLines, newline)
 		}
@@ -215,6 +215,7 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 		for _, word := range strings.Split(line, " ") {
 
 			wordUpper := strings.ToUpper(word)
+			wordTrim := strings.Trim(wordUpper, ",()")
 
 			// check for inline comments
 			if word == "--" || word == "#" {
@@ -229,10 +230,10 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 			// check for keywords
 			isKeyword := false
 
-			if _, found := reservedKeywords[wordUpper]; found && !comment {
+			if _, found := reservedKeywords[wordTrim]; found && !comment {
 				isKeyword = true
-				offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, word))
-				newLine = append(newLine, strings.ToUpper(word))
+				offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, wordTrim))
+				newLine = append(newLine, wordUpper)
 			}
 
 			// else append line
