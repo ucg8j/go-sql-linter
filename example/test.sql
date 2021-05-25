@@ -32,7 +32,7 @@ good_cte AS (
 
 SELECT
 a,
-b,
+if(a Is Null, TRue, False) as b,
 c,
 d, -- ❌ trailing comma ❌ newline after select block
 FROM bad_cte -- ❌ newline after from block
