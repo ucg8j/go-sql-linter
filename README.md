@@ -21,7 +21,8 @@ $ gsl lint example/test.sql
 - [x] Trailing Whitespace
 - [x] Greater than one newline
 - [x] capitalisation of SQL keywords
-  - [] Bug: doesn't work if keyword has delimiter `,` immediately before/after keyword
+  - [x] Bug: doesn't work if keyword has delimiter `,` immediately before/after keyword
+  - [x] Bug: doesn't work if keyword is a function e.g. `if(a...`
 - [] detecting nested queries
 - [] 2 spaces for indentation. Not tabs.
 - [] blank line between groups of logic e.g after a select statement, after a from, after Joins etc

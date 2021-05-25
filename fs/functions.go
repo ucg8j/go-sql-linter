@@ -216,6 +216,8 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 
 			wordUpper := strings.ToUpper(word)
 			wordTrim := strings.Trim(wordUpper, ",()")
+			// take the function keyword from a string e.g. `if(a`
+			wordFunc := strings.Split(wordUpper, "(")[0]
 
 			// check for inline comments
 			if word == "--" || word == "#" {
@@ -231,6 +233,14 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 			isKeyword := false
 
 			if _, found := reservedKeywords[wordTrim]; found && !comment {
+				isKeyword = true
+				offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, wordTrim))
+				newLine = append(newLine, wordUpper)
+				continue
+			}
+
+			// handle function keywords
+			if _, found := reservedKeywords[wordFunc]; found && !comment {
 				isKeyword = true
 				offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, wordTrim))
 				newLine = append(newLine, wordUpper)
