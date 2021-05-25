@@ -216,7 +216,7 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 
 			wordUpper := strings.ToUpper(word)
 
-			// check for comment
+			// check for inline comments
 			if word == "--" || word == "#" {
 				comment = true
 				newLine = append(newLine, word)
@@ -229,10 +229,7 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 			// check for keywords
 			isKeyword := false
 
-			if _, found := reservedKeywords[word]; found && !comment {
-				isKeyword = true
-				newLine = append(newLine, word)
-			} else if _, found := reservedKeywords[wordUpper]; found && !comment {
+			if _, found := reservedKeywords[wordUpper]; found && !comment {
 				isKeyword = true
 				offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, word))
 				newLine = append(newLine, strings.ToUpper(word))
