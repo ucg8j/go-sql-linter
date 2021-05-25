@@ -9,8 +9,103 @@ import (
 )
 
 // https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#reserved_keywords
-var reservedKeywords = []string{
-	"ALL", "AND", "ANY", "ARRAY", "AS", "ASC", "ASSERT_ROWS_MODIFIED", "AT", "BETWEEN", "BY", "CASE", "CAST", "COLLATE", "CONTAINS", "CREATE", "CROSS", "CUBE", "CURRENT", "DEFAULT", "DEFINE", "DESC", "DISTINCT", "ELSE", "END", "ENUM", "ESCAPE", "EXCEPT", "EXCLUDE", "EXISTS", "EXTRACT", "FALSE", "FETCH", "FOLLOWING", "FOR", "FROM", "FULL", "GROUP", "GROUPING", "GROUPS", "HASH", "HAVING", "IF", "IGNORE", "IN", "INNER", "INTERSECT", "INTERVAL", "INTO", "IS", "JOIN", "LATERAL", "LEFT", "LIKE", "LIMIT", "LOOKUP", "MERGE", "NATURAL", "NEW", "NO", "NOT", "NULL", "NULLS", "OF", "ON", "OR", "ORDER", "OUTER", "OVER", "PARTITION", "PRECEDING", "PROTO", "RANGE", "RECURSIVE", "RESPECT", "RIGHT", "ROLLUP", "ROWS", "SELECT", "SET", "SOME", "STRUCT", "TABLESAMPLE", "THEN", "TO", "TREAT", "TRUE", "UNBOUNDED", "UNION", "UNNEST", "USING", "WHEN", "WHERE", "WINDOW", "WITH", "WITHIN"}
+var reservedKeywords = map[string]int{
+	"ALL":                  0,
+	"AND":                  1,
+	"ANY":                  2,
+	"ARRAY":                3,
+	"AS":                   4,
+	"ASC":                  5,
+	"ASSERT_ROWS_MODIFIED": 6,
+	"AT":                   7,
+	"BETWEEN":              8,
+	"BY":                   9,
+	"CASE":                 10,
+	"CAST":                 11,
+	"COLLATE":              12,
+	"CONTAINS":             13,
+	"CREATE":               14,
+	"CROSS":                15,
+	"CUBE":                 16,
+	"CURRENT":              17,
+	"DEFAULT":              18,
+	"DEFINE":               19,
+	"DESC":                 20,
+	"DISTINCT":             21,
+	"ELSE":                 22,
+	"END":                  23,
+	"ENUM":                 24,
+	"ESCAPE":               25,
+	"EXCEPT":               26,
+	"EXCLUDE":              27,
+	"EXISTS":               28,
+	"EXTRACT":              29,
+	"FALSE":                30,
+	"FETCH":                31,
+	"FOLLOWING":            32,
+	"FOR":                  33,
+	"FROM":                 34,
+	"FULL":                 35,
+	"GROUP":                36,
+	"GROUPING":             37,
+	"GROUPS":               38,
+	"HASH":                 39,
+	"HAVING":               40,
+	"IF":                   41,
+	"IGNORE":               42,
+	"IN":                   43,
+	"INNER":                44,
+	"INTERSECT":            45,
+	"INTERVAL":             46,
+	"INTO":                 47,
+	"IS":                   48,
+	"JOIN":                 49,
+	"LATERAL":              50,
+	"LEFT":                 51,
+	"LIKE":                 52,
+	"LIMIT":                53,
+	"LOOKUP":               54,
+	"MERGE":                55,
+	"NATURAL":              56,
+	"NEW":                  57,
+	"NO":                   58,
+	"NOT":                  59,
+	"NULL":                 60,
+	"NULLS":                61,
+	"OF":                   62,
+	"ON":                   63,
+	"OR":                   64,
+	"ORDER":                65,
+	"OUTER":                66,
+	"OVER":                 67,
+	"PARTITION":            68,
+	"PRECEDING":            69,
+	"PROTO":                70,
+	"RANGE":                71,
+	"RECURSIVE":            72,
+	"RESPECT":              73,
+	"RIGHT":                74,
+	"ROLLUP":               75,
+	"ROWS":                 76,
+	"SELECT":               77,
+	"SET":                  78,
+	"SOME":                 79,
+	"STRUCT":               80,
+	"TABLESAMPLE":          81,
+	"THEN":                 82,
+	"TO":                   83,
+	"TREAT":                84,
+	"TRUE":                 85,
+	"UNBOUNDED":            86,
+	"UNION":                87,
+	"UNNEST":               88,
+	"USING":                89,
+	"WHEN":                 90,
+	"WHERE":                91,
+	"WINDOW":               92,
+	"WITH":                 93,
+	"WITHIN":               94,
+}
 
 func ReadLinesInFile(filename string) []string {
 	if filepath.Ext(strings.TrimSpace(filename)) != ".sql" {
@@ -116,8 +211,10 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 
 		newLine := []string{}
 		comment := false
-		// TODO make the following two loops O(n), currently O(n^2)
+
 		for _, word := range strings.Split(line, " ") {
+
+			wordUpper := strings.ToUpper(word)
 
 			// check for comment
 			if word == "--" || word == "#" {
@@ -131,17 +228,14 @@ func CapitaliseKeywords(lines []string, lint bool) []string {
 
 			// check for keywords
 			isKeyword := false
-			for _, keyword := range reservedKeywords {
-				if word == keyword && !comment {
-					isKeyword = true
-					newLine = append(newLine, word)
-					break
-				} else if strings.ToUpper(word) == keyword && !comment {
-					isKeyword = true
-					offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, word))
-					newLine = append(newLine, strings.ToUpper(word))
-					break
-				}
+
+			if _, found := reservedKeywords[word]; found && !comment {
+				isKeyword = true
+				newLine = append(newLine, word)
+			} else if _, found := reservedKeywords[wordUpper]; found && !comment {
+				isKeyword = true
+				offendingLines = append(offendingLines, fmt.Sprintf("line %v, issue = %v Keyword not capitalised", index+1, word))
+				newLine = append(newLine, strings.ToUpper(word))
 			}
 
 			// else append line
