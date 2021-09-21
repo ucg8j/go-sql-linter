@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"go-sql-linter/fs"
@@ -13,7 +14,7 @@ func init() {
 
 var fixCommand = &cobra.Command{
 	Use:   "fix [model name]",
-	Short: "Fixes lint issues in a SQL",
+	Short: "🔨 Fixes lint issues in SQL",
 	Args:  cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		// read lines

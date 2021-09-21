@@ -10,10 +10,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "gsl",
 	Short: "A SQL linter written in go",
-	Long:  ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello, world")
-	},
+	Long:  `gsl is an opinionated SQL linter. Built in Go. gsl aims to be fast and config free`,
 }
 
 func Execute() {

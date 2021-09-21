@@ -14,7 +14,7 @@ func init() {
 
 var lintCommand = &cobra.Command{
 	Use:   "lint [model name]",
-	Short: "Lints the SQL",
+	Short: "ℹ️  prints to the command line all lint rules that are not followed by the provided SQL file",
 	Args:  cobra.ExactValidArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		// read lines
