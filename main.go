@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-sql-linter/cmd"
+	"gsl/cmd"
 )
 
 func main() {

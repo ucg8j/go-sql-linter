@@ -1,4 +1,4 @@
-module go-sql-linter
+module gsl
 
 go 1.15
 

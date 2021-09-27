@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"go-sql-linter/fs"
+	"gsl/fs"
 )
 
 func init() {
